@@ -5,104 +5,104 @@
 
 double xx;
 
-double ff (double t) { // подынтегральная функция
+double ff(double t) { // подынтегральная функция
 
-	return (1.0 + (t*xx)*(t*xx) );
+  return (1.0 + (t * xx) * (t * xx));
 
 }
 
-double FE (double xx) { // аналитическая формула (после интегрирования)
+double FE(double xx) { // аналитическая формула (после интегрирования)
 
-	return (8.0 * xx*xx + 6.0)/3.0;
+  return (8.0 * xx * xx + 6.0) / 3.0;
 }
 
-int main () {
+int main() {
 
 //  вектор узловых точек
-	double x[11] = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
+  double x[11] = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
 //  вектор промежуточных точек
-	double y[11] = {0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1};
+  double y[11] = {0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1};
 
 //	вектор значений функции в узловых точках  
-	double f[11];
+  double f[11];
 
 //	векторы значений функции в промежуточных точках: 
 //	"точное" значение (QUANC8), полиномиальная интерполяция (LAGRANGE)  
-	double q[11], l[11];
+  double q[11], l[11];
 
 // xs[12], fs[12] - векторы значений
 // аргумента и функции в узловых точках
 // для построения СПЛАЙН-аппроксимации
 // xs[i+1] = x[i], fs[i+1] = f[i]
-	double xs[12], fs[12];
+  double xs[12], fs[12];
 
 //	вектор значений функции в промежуточных точках:
 //	сплайн-аппроксимация (s) и вектор коэффициентов сплайнов (b, c, d)
-	double s[12], b[12], c[12], d[12];
+  double s[12], b[12], c[12], d[12];
 
 //	вектор точных (вычисленных с помощью аналитической формулы)
 //  значений функции в промежуточных точках:
-	double FEV[11];
+  double FEV[11];
 
 //	ПАРАМЕТРЫ программы QUANC8:
 //	пределы интергрирования
-	double ax=0.0, bx=2.0;
+  double ax = 0.0, bx = 2.0;
 // абсолютная и относительная погрешности
-	double abserr=1.0e-14, relerr=0;
+  double abserr = 1.0e-14, relerr = 0;
 // реальная погрешность, индикатор надёжности
-	double errest, flag;
+  double errest, flag;
 // количество внутренних вычислений функции
-	int nofun;
+  int nofun;
 
 //	начальное значение аргумента (узловые точки)
-	xx=0.0;
+  xx = 0.0;
 
 // Вспомогательная печать - табличная функция ("шапка")
-	printf("\n Tabled Functuion\n\nPoint         ETALON            QUANC8  \n\n");
+  printf("\n Tabled Functuion\n\nPoint         ETALON            QUANC8  \n\n");
 
-	for(int i=0; i<11; i++) {
-	
-		quanc8(ff, ax, bx, abserr, relerr, &f[i], &errest, &nofun, &flag);
+  for (int i = 0; i < 11; i++) {
 
-		// для сплайна
-		xs[i+1] = xx;
-		fs[i+1] = f[i];
+    quanc8(ff, ax, bx, abserr, relerr, &f[i], &errest, &nofun, &flag);
+
+    // для сплайна
+    xs[i + 1] = xx;
+    fs[i + 1] = f[i];
 
 // Вспомогательная печать - табличная функция
-		printf("%.1lf    %.16lf   %.16lf  \n", xx, FE(xx), f[i]);
+    printf("%.1lf    %.16lf   %.16lf  \n", xx, FE(xx), f[i]);
 
 //	инкремент аргумента с заданным шагом (узловые точки)
-		xx+=0.2;
+    xx += 0.2;
 
-	}
+  }
 
 
 // Вычисление коэффициентов СПЛАЙН-аппроксимации
-	spline (11, xs, fs, b, c, d);
+  spline(11, xs, fs, b, c, d);
 
 //	начальное значение аргумента (промежуточные точки)
-	xx=0.1;
+  xx = 0.1;
 
-	for(int i=0; i<11; i++) {
-	
-		FEV[i] = FE(xx);
-		quanc8(ff, ax, bx, abserr, relerr, &q[i], &errest, &nofun, &flag);
-		l[i] = lagrange(10, x, f, y[i]);
+  for (int i = 0; i < 11; i++) {
 
-		s[i] = seval(11, &y[i], xs, fs, b, c, d);
+    FEV[i] = FE(xx);
+    quanc8(ff, ax, bx, abserr, relerr, &q[i], &errest, &nofun, &flag);
+    l[i] = lagrange(10, x, f, y[i]);
 
-	//	инкремент аргумента с заданным шагом (промежуточные точки)
-		xx+=0.2;
+    s[i] = seval(11, &y[i], xs, fs, b, c, d);
 
-	}
+    //	инкремент аргумента с заданным шагом (промежуточные точки)
+    xx += 0.2;
+
+  }
 
 //	печать результатов
-	printf("\nPoint		ETALON		QUANC8		LAGRANGE		SPLINE  \n\n");
+  printf("\nPoint		ETALON		QUANC8		LAGRANGE		SPLINE  \n\n");
 
-	for(int i=0; i<11; i++) {
+  for (int i = 0; i < 11; i++) {
 
-		printf("%.1lf %.16lf %.16lf %.16lf %.16lf \n", y[i], FEV[i], q[i], l[i], s[i]);
-	}
+    printf("%.1lf %.16lf %.16lf %.16lf %.16lf \n", y[i], FEV[i], q[i], l[i], s[i]);
+  }
 
 }
 
