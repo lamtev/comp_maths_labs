@@ -2,7 +2,7 @@
 
 double lagrange(int n, double *x, double *y, double xRas) {
   int i = 0, j = 0;
-  double p = 1, l = 0;
+  double p, l = 0;
   for (i = 0; i <= n; i++) {
     for (p = 1, j = 0; j <= n; j++) {
       if (j != i)
