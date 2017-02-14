@@ -1,5 +1,4 @@
-﻿// quanc8.cpp
-#include "quanc8.h"
+﻿#include "quanc8.h"
 #include <math.h>
 
 void quanc8(double (*FUN)(double), double A, double B, double ABSERR,

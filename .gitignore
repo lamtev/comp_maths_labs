@@ -1,0 +1,11 @@
+.idea
+cmake-build*
+build
+*.aux
+*.toc
+*.pdf
+*.out
+*.gz
+*.log
+Makefile
+doxygen

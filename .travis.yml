@@ -1,0 +1,32 @@
+language: generic
+
+sudo: required
+
+dist: trusty
+
+services: docker
+
+matrix:
+  include:
+    - env: LAB="lab1"
+
+script:
+  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs lamtev/cxx /bin/bash -c " cd comp_maths_labs/${LAB} && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && cmake --build . "
+  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report && pdflatex latex/${LAB}.tex && pdflatex latex/${LAB}.tex "
+  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report && doxygen doxygen/config.doxygen && make doxygen/latex && make doxygen/latex "
+
+before_deploy:
+  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/report/latex/report/${LAB}.pdf
+  - sudo mv ${TRAVIS_BUILD_DIR}/report/latex/report/${LAB}.pdf ${TRAVIS_BUILD_DIR}/report/latex/report/${LAB}_report.pdf
+  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/report/doxygen/latex/refman.pdf
+  - sudo mv ${TRAVIS_BUILD_DIR}/report/doxygen/latex/refman.pdf ${TRAVIS_BUILD_DIR}/report/doxygen/latex/${LAB}_documentation.pdf
+  
+deploy:
+  provider: releases 
+  api_key: "$GITHUB_DEPLOY_TOKEN" 
+  file: 
+    - ${TRAVIS_BUILD_DIR}/report/doxygen/latex/${LAB}_documentation.pdf
+    - ${TRAVIS_BUILD_DIR}/report/latex/report/${LAB}_report.pdf
+  skip_cleanup: true 
+  on: 
+    tags: true

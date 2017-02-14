@@ -1,108 +1,41 @@
-﻿#include <stdio.h>
-#include "../../lib/src/lagrange.h"
-#include "../../lib/src/quanc8.h"
-#include "../../lib/src/SPLINES.h"
+﻿#include <cmath>
+#include <iostream>
+#include <array>
+#include <vector>
+#include <limits>
 
-double xx;
+#include "../../lib/src/spline_calculation.h"
+#include "../../lib/src/lagrange_calculation.h"
+#include "../../lib/src/quanc8_calculation.h"
+#include "../../lib/src/util.h"
 
-double ff(double t) { // подынтегральная функция
-
-  return (1.0 + (t * xx) * (t * xx));
-
+double fun(double x) {
+  if (x == 0) {
+    return sin(x) / std::numeric_limits<double>::denorm_min();
+  }
+  return sin(x) / x;
 }
 
-double FE(double xx) { // аналитическая формула (после интегрирования)
+int main(int argc, char **argv) {
+  const double LEFT = 2.0;
+  const double RIGHT = 3.0;
+  const double STEP = 1e-1;
+  const int NUMBER_OF_TEST_POINTS = 10;
 
-  return (8.0 * xx * xx + 6.0) / 3.0;
+  std::vector<double> points = generatePoints(LEFT, RIGHT, STEP);
+  std::vector<double> values = calculateQuanc8Values(fun, points);
+
+  std::vector<double> testPoints = generateTestPoints(NUMBER_OF_TEST_POINTS, STEP);
+  std::vector<double> splineCalculatedValues = calculateSplineValues(points, values, testPoints);
+  std::vector<double> quanc8CalculatedValues = calculateQuanc8Values(fun, testPoints);
+  std::vector<double> lagrangeCalculatedValues = calculateLagrangeValues(points, values, testPoints);
+
+  std::cout << "x_k\tlagrange\tspline\t\tquanc8" << std::endl << std::endl;
+  unsigned i = 0;
+  for (double testPoint : testPoints) {
+    std::cout << testPoint << "\t" << lagrangeCalculatedValues.at(i) << "\t\t" << splineCalculatedValues.at(i) <<
+              "\t\t" << quanc8CalculatedValues.at(i) << std::endl;
+    ++i;
+  }
+  return 0;
 }
-
-int main() {
-
-//  вектор узловых точек
-  double x[11] = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
-//  вектор промежуточных точек
-  double y[11] = {0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1};
-
-//	вектор значений функции в узловых точках  
-  double f[11];
-
-//	векторы значений функции в промежуточных точках: 
-//	"точное" значение (QUANC8), полиномиальная интерполяция (LAGRANGE)  
-  double q[11], l[11];
-
-// xs[12], fs[12] - векторы значений
-// аргумента и функции в узловых точках
-// для построения СПЛАЙН-аппроксимации
-// xs[i+1] = x[i], fs[i+1] = f[i]
-  double xs[12], fs[12];
-
-//	вектор значений функции в промежуточных точках:
-//	сплайн-аппроксимация (s) и вектор коэффициентов сплайнов (b, c, d)
-  double s[12], b[12], c[12], d[12];
-
-//	вектор точных (вычисленных с помощью аналитической формулы)
-//  значений функции в промежуточных точках:
-  double FEV[11];
-
-//	ПАРАМЕТРЫ программы QUANC8:
-//	пределы интергрирования
-  double ax = 0.0, bx = 2.0;
-// абсолютная и относительная погрешности
-  double abserr = 1.0e-14, relerr = 0;
-// реальная погрешность, индикатор надёжности
-  double errest, flag;
-// количество внутренних вычислений функции
-  int nofun;
-
-//	начальное значение аргумента (узловые точки)
-  xx = 0.0;
-
-// Вспомогательная печать - табличная функция ("шапка")
-  printf("\n Tabled Functuion\n\nPoint         ETALON            QUANC8  \n\n");
-
-  for (int i = 0; i < 11; i++) {
-
-    quanc8(ff, ax, bx, abserr, relerr, &f[i], &errest, &nofun, &flag);
-
-    // для сплайна
-    xs[i + 1] = xx;
-    fs[i + 1] = f[i];
-
-// Вспомогательная печать - табличная функция
-    printf("%.1lf    %.16lf   %.16lf  \n", xx, FE(xx), f[i]);
-
-//	инкремент аргумента с заданным шагом (узловые точки)
-    xx += 0.2;
-
-  }
-
-
-// Вычисление коэффициентов СПЛАЙН-аппроксимации
-  spline(11, xs, fs, b, c, d);
-
-//	начальное значение аргумента (промежуточные точки)
-  xx = 0.1;
-
-  for (int i = 0; i < 11; i++) {
-
-    FEV[i] = FE(xx);
-    quanc8(ff, ax, bx, abserr, relerr, &q[i], &errest, &nofun, &flag);
-    l[i] = lagrange(10, x, f, y[i]);
-
-    s[i] = seval(11, &y[i], xs, fs, b, c, d);
-
-    //	инкремент аргумента с заданным шагом (промежуточные точки)
-    xx += 0.2;
-
-  }
-
-//	печать результатов
-  printf("\nPoint		ETALON		QUANC8		LAGRANGE		SPLINE  \n\n");
-
-  for (int i = 0; i < 11; i++) {
-
-    printf("%.1lf %.16lf %.16lf %.16lf %.16lf \n", y[i], FEV[i], q[i], l[i], s[i]);
-  }
-
-}
-

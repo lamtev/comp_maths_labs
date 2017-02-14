@@ -1,4 +1,4 @@
-﻿#include "SPLINES.h"
+﻿#include "splines.h"
 #include <math.h>
 
 void spline(int n, double *x, double *y, double *b, double *c, double *d) {
