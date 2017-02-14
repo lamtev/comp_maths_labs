@@ -17,17 +17,17 @@ script:
   - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report/doxygen/latex && pdflatex refman.tex && pdflatex refman.tex "
 
 before_deploy:
-  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/report/latex/${LAB}.pdf
-  - sudo mv ${TRAVIS_BUILD_DIR}/report/latex/${LAB}.pdf ${TRAVIS_BUILD_DIR}/report/latex/${LAB}_report.pdf
-  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/report/doxygen/latex/refman.pdf
-  - sudo mv ${TRAVIS_BUILD_DIR}/report/doxygen/latex/refman.pdf ${TRAVIS_BUILD_DIR}/report/doxygen/latex/${LAB}_documentation.pdf
+  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}.pdf
+  - sudo mv ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}.pdf ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
+  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/refman.pdf
+  - sudo mv ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/refman.pdf ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/${LAB}_documentation.pdf
   
 deploy:
   provider: releases 
   api_key: "$GITHUB_DEPLOY_TOKEN" 
   file: 
-    - ${TRAVIS_BUILD_DIR}/report/doxygen/latex/${LAB}_documentation.pdf
-    - ${TRAVIS_BUILD_DIR}/report/latex/report/${LAB}_report.pdf
+    - ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/${LAB}_documentation.pdf
+    - ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/report/${LAB}_report.pdf
   skip_cleanup: true 
   on: 
     tags: true
