@@ -27,7 +27,7 @@ deploy:
   api_key: "$GITHUB_DEPLOY_TOKEN" 
   file: 
     - ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/${LAB}_documentation.pdf
-    - ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/report/${LAB}_report.pdf
+    - ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
   skip_cleanup: true 
   on: 
     tags: true
