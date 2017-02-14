@@ -13,7 +13,8 @@ matrix:
 script:
   - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs lamtev/cxx /bin/bash -c " cd comp_maths_labs/${LAB} && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && cmake --build . "
   - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report/latex && pdflatex ${LAB}.tex && pdflatex ${LAB}.tex "
-  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report/doxygen && doxygen config.doxygen && make latex && make latex "
+  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs lamtev/cxx /bin/bash -c " cd comp_maths_labs/${LAB}/report/doxygen && doxygen config.doxygen "
+  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report/doxygen/latex && pdflatex refman.tex && pdflatex refman.tex "
 
 before_deploy:
   - sudo chmod 777 ${TRAVIS_BUILD_DIR}/report/latex/report/${LAB}.pdf
