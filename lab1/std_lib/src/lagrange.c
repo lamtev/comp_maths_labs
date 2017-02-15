@@ -6,9 +6,9 @@ double lagrange(int n, double *x, double *y, double xRas) {
   for (i = 0; i <= n; i++) {
     for (p = 1, j = 0; j <= n; j++) {
       if (j != i)
-        p = p * (xRas - (*(x + j))) / ((*(x + i)) - (*(x + j)));
+        p = p * (xRas - x[j]) / (x[i] - x[j]);
     }
-    l += (*(y + i)) * p;
+    l += y[i] * p;
   }
   return l;
 }

@@ -10,7 +10,7 @@ const std::vector<double> calculateQuanc8Values(double (*fun)(double), const std
     int nofun;
     double flag;
     double value;
-    quanc8(fun, 0, point, std::numeric_limits<double>::denorm_min(), 0, &value, &errest, &nofun, &flag);
+    quanc8(fun, 0, point, 10e-20, 0, &value, &errest, &nofun, &flag);
     values.push_back(value);
   }
   return values;

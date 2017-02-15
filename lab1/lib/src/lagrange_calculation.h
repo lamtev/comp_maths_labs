@@ -13,8 +13,8 @@
  * @param calculationPoints вектор точкек, в которых вычисляются значения полинома Лагранжа.
  * @return Вектор значений интерполяционного полинома Лагранжа в заданных точках.
  */
-const std::vector<double> calculateLagrangeValues(std::vector<double> &points,
-                                                  std::vector<double> &values,
+const std::vector<double> calculateLagrangeValues(const std::vector<double> &points,
+                                                  const std::vector<double> &values,
                                                   const std::vector<double> &calculationPoints);
 
 #endif //LAB1_LAGRANGE_CALCULATION_H

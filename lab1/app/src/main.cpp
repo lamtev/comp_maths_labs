@@ -26,9 +26,9 @@ int main(int argc, char **argv) {
   std::vector<double> values = calculateQuanc8Values(fun, points);
 
   std::vector<double> testPoints = generateTestPoints(NUMBER_OF_TEST_POINTS, STEP);
+  std::vector<double> lagrangeCalculatedValues = calculateLagrangeValues(points, values, testPoints);
   std::vector<double> splineCalculatedValues = calculateSplineValues(points, values, testPoints);
   std::vector<double> quanc8CalculatedValues = calculateQuanc8Values(fun, testPoints);
-  std::vector<double> lagrangeCalculatedValues = calculateLagrangeValues(points, values, testPoints);
 
   std::cout << "x_k\tlagrange\tspline\t\tquanc8" << std::endl << std::endl;
   unsigned i = 0;
