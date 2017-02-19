@@ -2,12 +2,7 @@
 
 #include "../../std_lib/src/splines.h"
 
-const std::vector<double> shiftRight(const std::vector<double> &array) {
-  std::vector<double> shiftedArray = std::vector<double>();
-  shiftedArray.push_back(0);
-  shiftedArray.insert(shiftedArray.cend(), array.cbegin(), array.cend());
-  return shiftedArray;
-}
+const std::vector<double> shiftRight(const std::vector<double> &array);
 
 const std::vector<double> calculateSplineValues(const std::vector<double> &points,
                                                 const std::vector<double> &values,
@@ -21,9 +16,16 @@ const std::vector<double> calculateSplineValues(const std::vector<double> &point
   double d[points.size()];
   spline(points.size(), x, y, b, c, d);
   std::vector<double> calculatedValues = std::vector<double>();
-  for (double point : calculationPoints) {
+  for (auto point : calculationPoints) {
     double calculatedValue = seval(points.size(), &point, x, y, b, c, d);
     calculatedValues.push_back(calculatedValue);
   }
   return calculatedValues;
+}
+
+const std::vector<double> shiftRight(const std::vector<double> &array) {
+  std::vector<double> shiftedArray = std::vector<double>();
+  shiftedArray.push_back(0);
+  shiftedArray.insert(shiftedArray.cend(), array.cbegin(), array.cend());
+  return shiftedArray;
 }

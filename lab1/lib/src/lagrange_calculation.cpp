@@ -6,7 +6,7 @@ const std::vector<double> calculateLagrangeValues(const std::vector<double> &poi
                                                   const std::vector<double> &values,
                                                   const std::vector<double> &calculationPoints) {
   std::vector<double> calculatedValues = std::vector<double>();
-  for (double point : calculationPoints) {
+  for (auto point : calculationPoints) {
     double x[points.size()];
     std::copy(points.cbegin(), points.cend(), x);
     double y[values.size()];

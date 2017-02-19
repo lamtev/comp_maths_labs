@@ -1,4 +1,5 @@
 \documentclass[a4paper,12pt]{extarticle}
+
 \usepackage[utf8x]{inputenc}
 \usepackage[T1,T2A]{fontenc}
 \usepackage[russian]{babel}
@@ -10,8 +11,13 @@
 \usepackage{array}
 \usepackage{multirow}
 \usepackage{graphicx}
-
 \usepackage{caption}
+\usepackage{subcaption}
+\usepackage{chngcntr}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
 \renewcommand{\lstlistingname}{Программа} % заголовок листингов кода
 
 \bibliographystyle{ugost2008ls}
@@ -21,9 +27,9 @@
 extendedchars=\true,
 keepspaces=true,
 language=C++,						% choose the language of the code
-basicstyle=\small,		% the size of the fonts that are used for the code
+basicstyle=\scriptsize,		% the size of the fonts that are used for the code
 numbers=left,					% where to put the line-numbers
-numberstyle=\small,		% the size of the fonts that are used for the line-numbers
+numberstyle=\scriptsize,		% the size of the fonts that are used for the line-numbers
 stepnumber=1,					% the step between two line-numbers. If it is 1 each line will be numbered
 numbersep=5pt,					% how far the line-numbers are from the code
 backgroundcolor=\color{white},	% choose the background color. You must add \usepackage{color}

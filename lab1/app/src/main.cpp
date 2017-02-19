@@ -1,17 +1,18 @@
 ﻿#include <cmath>
 #include <iostream>
-#include <array>
 #include <vector>
-#include <limits>
 
 #include "../../lib/src/spline_calculation.h"
 #include "../../lib/src/lagrange_calculation.h"
 #include "../../lib/src/quanc8_calculation.h"
 #include "../../lib/src/util.h"
+#include "help.h"
 
-double fun(double x) {
+double sinXDivX(double x) {
+  /// Функция sin(x)/x не определена в точке 0.
+  /// Поэтому доопределим её в этой точке до 1.
   if (x == 0) {
-    return sin(x) / std::numeric_limits<double>::denorm_min();
+    return 1;
   }
   return sin(x) / x;
 }
@@ -21,21 +22,42 @@ int main(int argc, char **argv) {
   const double RIGHT = 3.0;
   const double STEP = 1e-1;
   const int NUMBER_OF_TEST_POINTS = 10;
+  const std::vector<double> ABSOLUTE_ERRORS{1e-7, 1e-13, 1e-19, 1e-20};
 
-  std::vector<double> points = generatePoints(LEFT, RIGHT, STEP);
-  std::vector<double> values = calculateQuanc8Values(fun, points);
+  for (auto error : ABSOLUTE_ERRORS) {
+    std::vector<double> points = generatePoints(LEFT, RIGHT, STEP);
+    std::vector<Quanc8Info> valuesCalculationInfo;
+    std::vector<double> values = calculateQuanc8Values(sinXDivX,
+                                                       points,
+                                                       error,
+                                                       valuesCalculationInfo);
 
-  std::vector<double> testPoints = generateTestPoints(NUMBER_OF_TEST_POINTS, STEP);
-  std::vector<double> lagrangeCalculatedValues = calculateLagrangeValues(points, values, testPoints);
-  std::vector<double> splineCalculatedValues = calculateSplineValues(points, values, testPoints);
-  std::vector<double> quanc8CalculatedValues = calculateQuanc8Values(fun, testPoints);
+    std::vector<double> testPoints = generateTestPoints(NUMBER_OF_TEST_POINTS, STEP);
+    std::vector<double> lagrangeCalculatedValues = calculateLagrangeValues(points,
+                                                                           values,
+                                                                           testPoints);
+    std::vector<double> splineCalculatedValues = calculateSplineValues(points,
+                                                                       values,
+                                                                       testPoints);
+    std::vector<Quanc8Info> exactValuesCalculationInfo;
+    std::vector<double> exactValues = calculateQuanc8Values(sinXDivX,
+                                                            testPoints,
+                                                            error,
+                                                            exactValuesCalculationInfo);
 
-  std::cout << "x_k\tlagrange\tspline\t\tquanc8" << std::endl << std::endl;
-  unsigned i = 0;
-  for (double testPoint : testPoints) {
-    std::cout << testPoint << "\t" << lagrangeCalculatedValues.at(i) << "\t\t" << splineCalculatedValues.at(i) <<
-              "\t\t" << quanc8CalculatedValues.at(i) << std::endl;
-    ++i;
+    printDelimiter();
+    std::cout << "error: " << error << std::endl;
+    std::cout << std::endl;
+
+    printTableDefinedFunctionValuesCalculation();
+    printQuanc8Info(valuesCalculationInfo);
+
+    printExactValuesCalculation();
+    printQuanc8Info(exactValuesCalculationInfo);
+
+    printTable(testPoints, lagrangeCalculatedValues, splineCalculatedValues, exactValues);
+    printDelimiter();
+    std::cout << std::endl;
   }
   return 0;
 }

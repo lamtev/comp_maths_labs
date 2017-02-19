@@ -1,5 +1,5 @@
 ﻿#ifndef LAB1_QUANC8_H
-#define _LAB1_QUANC8_H
+#define LAB1_QUANC8_H
 
 #ifdef __cplusplus
 extern "C" {
