@@ -1,5 +1,5 @@
-﻿#ifndef LAB1_QUANC8_H
-#define LAB1_QUANC8_H
+﻿#ifndef QUANC8_H
+#define QUANC8_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -12,4 +12,4 @@ void quanc8(double (*FUN)(double), double A, double B, double ABSERR,
 }
 #endif
 
-#endif //LAB1_QUANC8_H
+#endif //QUANC8_H

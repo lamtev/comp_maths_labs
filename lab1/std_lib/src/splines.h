@@ -1,5 +1,5 @@
-﻿#ifndef LAB1_SPLINES_H
-#define LAB1_SPLINES_H
+﻿#ifndef SPLINES_H
+#define SPLINES_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -12,4 +12,4 @@ double seval(int n, double *u, double *x, double *y, double *b, double *c, doubl
 }
 #endif
 
-#endif //LAB1_SPLINES_H
+#endif //SPLINES_H

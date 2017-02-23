@@ -11,7 +11,7 @@ const std::vector<double> calculateLagrangeValues(const std::vector<double> &poi
     std::copy(points.cbegin(), points.cend(), x);
     double y[values.size()];
     std::copy(values.cbegin(), values.cend(), y);
-    double calculatedValue = lagrange(points.size(), x, y, point);
+    double calculatedValue = lagrange((int) points.size(), x, y, point);
     calculatedValues.push_back(calculatedValue);
   }
   return calculatedValues;

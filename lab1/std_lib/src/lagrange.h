@@ -1,5 +1,5 @@
-﻿#ifndef LAB1_LAGRANGE_H
-#define LAB1_LAGRANGE_H
+﻿#ifndef LAGRANGE_H
+#define LAGRANGE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,4 +11,4 @@ double lagrange(int n, double *x, double *y, double xRas);
 }
 #endif
 
-#endif //LAB1_LAGRANGE_H
+#endif //LAGRANGE_H
