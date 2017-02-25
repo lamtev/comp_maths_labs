@@ -1,0 +1,10 @@
+allprojects {
+    group 'com.lamtev.comp_maths_labs'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+
+    repositories {
+        jcenter()
+    }
+}

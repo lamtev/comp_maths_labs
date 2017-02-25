@@ -9,12 +9,12 @@ services: docker
 matrix:
   include:
     - env: LAB="lab1"
+    - env: LAB="lab2"
 
 script:
-  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs lamtev/cxx /bin/bash -c " cd comp_maths_labs/${LAB} && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && cmake --build . "
-  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report/latex && pdflatex ${LAB}.tex && pdflatex ${LAB}.tex "
-  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs lamtev/cxx /bin/bash -c " cd comp_maths_labs/${LAB}/report/doxygen && doxygen config.doxygen "
-  - docker run -v $TRAVIS_BUILD_DIR:/comp_maths_labs  lamtev/latex:full /bin/bash -c " cd comp_maths_labs/${LAB}/report/doxygen/latex && pdflatex refman.tex && makeindex refman.idx && pdflatex refman.tex && makeindex refman.idx && pdflatex refman.tex "
+  - cd ${TRAVIS_BUILD_DIR}/${LAB}
+  - chmod +x build.sh
+  - ./build.sh
 
 before_deploy:
   - sudo mv ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}.pdf ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf

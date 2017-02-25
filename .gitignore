@@ -1,6 +1,7 @@
 .idea
 cmake-build*
 build
+.gradle
 *.aux
 *.toc
 *.pdf
@@ -9,3 +10,4 @@ build
 *.log
 Makefile
 doxygen
+*.dll
