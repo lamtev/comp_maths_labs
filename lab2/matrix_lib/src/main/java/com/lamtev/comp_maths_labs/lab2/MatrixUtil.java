@@ -11,37 +11,40 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+//TODO migrate from JNA to JNR
 class MatrixUtil {
 
-    static void decomp(double[][] matrix, MutableDouble cond, int[] iptv, double[] work) {
-        final int DIMENSION = matrix.length;
-        Pointer[] data = getMatrixAsPointers(matrix, DIMENSION);
-        Pointer condPtr = getCondPointer(cond);
+    public static void decomp(double[][] matrix, MutableDouble cond, int[] iptv, double[] work) {
+        final int ORDER = matrix.length;
 
-        ForsytheMatrixLibrary.INSTANCE.decomp(DIMENSION, data, condPtr, iptv, work);
+        double[] data = getMatrixAsLinearArray(matrix, ORDER);
 
+        Pointer condPtr = getCondAsPointer(cond);
+
+        ForsytheMatrixLibrary.INSTANCE.decomp(ORDER, data, condPtr, iptv, work);
+        updateMatrix(matrix, ORDER, data);
         cond.setValue(condPtr.getDouble(0));
-        updateMatrix(matrix, DIMENSION, data);
+        condPtr.clear(Double.BYTES);
     }
 
-    static void solve(double[][] matrix, double[] vector, int[] ipvt) {
-        final int DIMENSION = matrix.length;
-        Pointer[] data = getMatrixAsPointers(matrix, DIMENSION);
-        ForsytheMatrixLibrary.INSTANCE.solve(DIMENSION, data, vector, ipvt);
-        updateMatrix(matrix, DIMENSION, data);
+    public static void solve(double[][] matrix, double[] vector, int[] ipvt) {
+        final int ORDER = matrix.length;
+        double[] data = getMatrixAsLinearArray(matrix, ORDER);
+        ForsytheMatrixLibrary.INSTANCE.solve(ORDER, data, vector, ipvt);
     }
 
-    private interface ForsytheMatrixLibrary extends Library {
-        ForsytheMatrixLibrary INSTANCE = (ForsytheMatrixLibrary)
-                Native.loadLibrary(pathToLib(), ForsytheMatrixLibrary.class);
-
-        void decomp(int n, Pointer[] a, Pointer cond, int[] ipvt, double[] work);
-
-        void solve(int n, Pointer[] a, double[] b, int[] ipvt);
-
+    private static double[] getMatrixAsLinearArray(double[][] matrix, int ORDER) {
+        double[] data = new double[ORDER * ORDER];
+        int i = 0;
+        for (double[] row : matrix) {
+            for (double x : row) {
+                data[i++] = x;
+            }
+        }
+        return data;
     }
 
-    private static Pointer getCondPointer(MutableDouble cond) {
+    private static Pointer getCondAsPointer(MutableDouble cond) {
         Pointer condPtr = new Memory(Double.BYTES);
         double[] condArr = new double[1];
         condArr[0] = cond.doubleValue();
@@ -49,19 +52,25 @@ class MatrixUtil {
         return condPtr;
     }
 
-    private static Pointer[] getMatrixAsPointers(double[][] matrix, int DIMENSION) {
-        Pointer[] data = new Pointer[DIMENSION];
-        for (int i = 0; i < DIMENSION; ++i) {
-            data[i] = new Memory(DIMENSION * Double.BYTES);
-            data[i].write(0, matrix[i], 0, DIMENSION);
+    private static void updateMatrix(double[][] matrix, int ORDER, double[] data) {
+        int k = 0;
+        for (int i = 0; i < ORDER; ++i) {
+            for (int j = 0; j < ORDER; ++j) {
+                matrix[i][j] = data[k++];
+            }
         }
-        return data;
     }
 
-    private static void updateMatrix(double[][] matrix, int DIMENSION, Pointer[] data) {
-        for (int i = 0; i < DIMENSION; ++i) {
-            matrix[i] = data[i].getDoubleArray(0, DIMENSION);
-        }
+    private static final String FORSYTHE_MATRIX_LIBRARY_PREFIX = "libforsythe_matrix";
+
+    private interface ForsytheMatrixLibrary extends Library {
+        ForsytheMatrixLibrary INSTANCE = (ForsytheMatrixLibrary)
+                Native.loadLibrary(pathToLib(), ForsytheMatrixLibrary.class);
+
+        void decomp(int n, double[] a, Pointer cond, int[] ipvt, double[] work);
+
+        void solve(int n, double[] a, double[] b, int[] ipvt);
+
     }
 
     private static String pathToLib() {
@@ -76,10 +85,8 @@ class MatrixUtil {
         return null;
     }
 
-    private static final String FORSYTHE_MATRIX_LIBRARY = "libforsythe_matrix";
-
     private static boolean isLibrary(Path path) {
-        return path.getFileName().toString().contains(FORSYTHE_MATRIX_LIBRARY);
+        return path.getFileName().toString().contains(FORSYTHE_MATRIX_LIBRARY_PREFIX);
     }
 
 }

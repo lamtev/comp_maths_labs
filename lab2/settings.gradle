@@ -1,3 +1,4 @@
 rootProject.name = 'lab2'
 include 'matrix_lib'
+include 'app'
 

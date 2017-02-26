@@ -1,10 +1,10 @@
 ﻿#include <math.h>
 
-void solve(int n, double **a, double *b, int *ipvt) {
+void solve(int n, double *a, double *b, int *ipvt) {
   int kb, km1, nm1, kp1, i, k, m;
   double t;
   if (n == 1) {
-    b[1 - 1] = b[1 - 1] / a[1 - 1][1 - 1];
+    b[0] /= a[0];
     return;
   }
   nm1 = n - 1;
@@ -14,27 +14,27 @@ void solve(int n, double **a, double *b, int *ipvt) {
     t = b[m - 1];
     b[m - 1] = b[k - 1];
     b[k - 1] = t;
-    for (i = kp1; i <= n; i++) b[i - 1] = b[i - 1] + a[i - 1][k - 1] * t;
+    for (i = kp1; i <= n; i++) b[i - 1] = b[i - 1] + a[(i - 1) * n + (k - 1)] * t;
   }
   for (kb = 1; kb <= nm1; kb++) {
     km1 = n - kb;
     k = km1 + 1;
-    b[k - 1] = b[k - 1] / a[k - 1][k - 1];
+    b[k - 1] = b[k - 1] / a[(k - 1) * n + (k - 1)];
     t = -b[k - 1];
-    for (i = 1; i <= km1; i++) b[i - 1] = b[i - 1] + a[i - 1][k - 1] * t;
+    for (i = 1; i <= km1; i++) b[i - 1] = b[i - 1] + a[(i - 1) * n + (k - 1)] * t;
   }
-  b[1 - 1] = b[1 - 1] / a[1 - 1][1 - 1];
+  b[0] /= a[0];
 }
 
-void decomp(int n, double **a, double *cond, int *ipvt, double *work) {
+void decomp(int n, double *a, double *cond, int *ipvt, double *work) {
   int nm1, i, j, k, kp1, kb, km1, m;
   double ek, t, anorm, ynorm, znorm;
   ipvt[n - 1] = 1;
   if (n == 1) {
     *cond = 1.0;
-    if (a[1 - 1][1 - 1] != 0.0) return;
+    if (a[0] != 0.0) return;
     else {
-      *cond = (float) 1.0e+32;
+      *cond = 1.0e+32;
       return;
     }
   };
@@ -42,29 +42,29 @@ void decomp(int n, double **a, double *cond, int *ipvt, double *work) {
   anorm = 0.0;
   for (j = 1; j <= n; j++) {
     t = 0.0;
-    for (i = 1; i <= n; i++) t = t + fabs(a[i - 1][j - 1]);
+    for (i = 1; i <= n; i++) t = t + fabs(a[(i - 1) * n + (j - 1)]);
     if (t > anorm) anorm = t;
   }
   for (k = 1; k <= nm1; k++) {
     kp1 = k + 1;
     m = k;
     for (i = kp1; i <= n; i++)
-      if (fabs(a[i - 1][k - 1]) > fabs(a[m - 1][k - 1]))
+      if (fabs(a[(i - 1) * n + (k - 1)]) > fabs(a[(m - 1) * n + (k - 1)]))
         m = i;
     ipvt[k - 1] = m;
     if (m != k) ipvt[n - 1] = -ipvt[n - 1];
-    t = a[m - 1][k - 1];
-    a[m - 1][k - 1] = a[k - 1][k - 1];
-    a[k - 1][k - 1] = t;
+    t = a[(m - 1) * n + (k - 1)];
+    a[(m - 1) * n + (k - 1)] = a[(k - 1) * n + (k - 1)];
+    a[(k - 1) * n + (k - 1)] = t;
     if (t != 0.0) {
-      for (i = kp1; i <= n; i++) a[i - 1][k - 1] = -a[i - 1][k - 1] / t;
+      for (i = kp1; i <= n; i++) a[(i - 1) * n + (k - 1)] = -a[(i - 1) * n + (k - 1)] / t;
       for (j = kp1; j <= n; j++) {
-        t = a[m - 1][j - 1];
-        a[m - 1][j - 1] = a[k - 1][j - 1];
-        a[k - 1][j - 1] = t;
+        t = a[(m - 1) * n + (j - 1)];
+        a[(m - 1) * n + (j - 1)] = a[(k - 1) * n + (j - 1)];
+        a[(k - 1) * n + (j - 1)] = t;
         if (t != 0.0)
           for (i = kp1; i <= n; i++)
-            a[i - 1][j - 1] = a[i - 1][j - 1] + a[i - 1][k - 1] * t;
+            a[(i - 1) * n + (j - 1)] += a[(i - 1) * n + (k - 1)] * t;
       }
     }
   }
@@ -73,21 +73,21 @@ void decomp(int n, double **a, double *cond, int *ipvt, double *work) {
     if (k != 1) {
       km1 = k - 1;
       for (i = 1; i <= km1; i++)
-        t = t + a[i - 1][k - 1] * work[i - 1];
+        t += a[(i - 1) * n + (k - 1)] * work[i - 1];
     }
     ek = 1.0;
     if (t < 0.0) ek = -1.0;
-    if (a[k - 1][k - 1] == 0.0) {
+    if (a[(k - 1) * n + (k - 1)] == 0.0) {
       *cond = 1.0E+20;
       return;
     };
-    work[k - 1] = -(ek + t) / a[k - 1][k - 1];
+    work[k - 1] = -(ek + t) / a[(k - 1) * n + (k - 1)];
   }
   for (kb = 1; kb <= nm1; kb++) {
     k = n - kb;
     t = 0.0;
     kp1 = k + 1;
-    for (i = kp1; i <= n; i++) t = t + a[i - 1][k - 1] * work[k - 1];
+    for (i = kp1; i <= n; i++) t += a[(i - 1) * n + (k - 1)] * work[k - 1];
     work[k - 1] = t;
     m = ipvt[k - 1];
     if (m != k) {

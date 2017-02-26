@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+
 #include "../../lib/src/quanc8_calculation.h"
 
 void printTable(const std::vector<double> &points,
