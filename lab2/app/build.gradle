@@ -1,3 +1,12 @@
 dependencies {
     compile project(':matrix_lib')
 }
+
+jar {
+    manifest {
+        attributes("Main-Class": "Lab2")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

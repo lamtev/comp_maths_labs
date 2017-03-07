@@ -1,4 +1,4 @@
-package com.lamtev.comp_maths_labs.lab2;
+package com.lamtev.comp_maths_labs.lab2.matrix_lib;
 
 import jnr.ffi.LibraryLoader;
 import jnr.ffi.Memory;

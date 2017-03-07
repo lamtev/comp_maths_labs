@@ -6,88 +6,214 @@
 \include{titlepage}
 
 \section{Цель работы}
-Сравнить точность интерполяционного полинома Лагранжа и интерполяционного сплайн-полинома для заданной функции.
+Исследовать зависимость нормы матрицы от возмущения исходных данных.
 
 \section{Решаемые задачи}
 \begin{enumerate}
 
-\item Для $2 \leq x \leq 3$ с шагом $h = 0.1$ вычислить значение функции f(x) с использованием программы \textbf{QUANC8}, где $f(x) = \int_{0}^{x} \frac{sin(t)}{t} dt$.
+\item Составить процедуру вычисления по заданной матрице $A_{N \times N}$ матрицы \\$R = A^{-1} A - E$ и её нормы $||R|| = \max_{k} \sum_j^N |R_{jk}|$.
 
-\item По полученным точкам построить сплайн-функцию и полином Лагранжа 10-й степени.
+\item Построить матрицы A при $x_k = \frac{1 + cos(k)}{sin^2(k)}, k = 1, \dots, 4$ и $x_5 = \frac{1+cos(1)}{sin^2(1 + \varepsilon)}$, для значений $\varepsilon = 10^{-1}, 10^{-2}, 10^{-3}, \dots, 10^{-16}, 0$ и $N = 5$.
 
-\item  В точках $x_k = (k - 0.5) \cdot h + 2$, для $k = 1, 2, \dots, 10$ сравнить значение сплайн-функции и полинома с точным значением f(x), которое вычисляется программой \textbf{QUANC8} с заданием высокой точности.
+\begin{displaymath}
+A=
+  \begin{pmatrix}
+    1 & 1 & \dots & 1 \\
+    x_1 & x_2 & \dots & x_N \\
+    \dots & \dots & \dots & \dots & \\
+    x_1^{N-1} & x_2^{N-1} & \dots & x_N^{N-1} \\
+  \end{pmatrix}
+\end{displaymath}
+
+
+\item  Исследовать зависимость погрешности вычисления $||R||$ от $\varepsilon$.
 \end{enumerate}
 
 
 \section{Ход выполнения работы}
 
-В ходе выполнения работы было разработано программное обеспечение на языке программирования \textbf{с++}, позволяющее решить поставленные задачи. При его разработке использовались стандартные функции \textbf{QUANC8}, \textbf{SPLINE} и \textbf{SEVAL}. Исходный код представлен в приложении 1.
+В ходе выполнения работы было разработано программное обеспечение на языке программирования \textbf{java}, позволяющее решить поставленные задачи. Данное программное обеспечение включает в себя:
+\begin{itemize}
 
- На рисунках \ref{pic:demo1}, \ref{pic:demo2}  и \ref{pic:demo3} изображён вывод разработанной программы с абсолютной погрешностью при вычислении интеграла по \textbf{QUANC8} $10^{-7}$, $10^{-13}$ и $10^{-19}$ соответственно. 
+\item Библиотеку \textbf{MatrixUtil} с функциями \textbf{decomp} и \textbf{solve}, которые содержат вызовы стандартных форсайтовских функций \textbf{decomp} и \textbf{solve}, разработанных на языке программирования \textbf{с}, из динамической библиотеки.
+
+\item Библиотеку \textbf{Matrix}, позволяющую совершать различные действия над матрицами, в том числе, \textit{обращение, произведение, вычитание, вычисление нормы}, которые необходимы для решения поставленных задач.
+
+ \textit{Обращение} матрицы реализовано как n итераций решения системы $\textbf{A}x = \textbf{B}$ при помощи функций \textbf{decomp} и \textbf{solve} c $\textbf{B}$ -- i-м столбцом единичной матрицы на i-й итерации и n -- порядком матрицы. Реализация представлена в листинге \ref{code:Matrix:inverted}.
  
+ Реализации \textit{произведения, вычитания, вычисления нормы} представлены в листингах \ref{code:Matrix:multiply}, \ref{code:Matrix:minus} и \ref{code:Matrix:calculateNormAsMaximumAbsoluteColumnSum} соответственно.
+
+\item Приложение, решающее поставленные задачи и использующее ранее перечисленные библиотеки (листинг \ref{code:Lab2}).
+
+\end{itemize} 
+
+Была исследована зависимость $||R||$ от величины $\varepsilon$, при $\varepsilon = 10^{-1}, 10^{-2}, \dots, 10^{-16}, 0$:\\[3mm]
+
+При $\varepsilon = 10^{-1}$ -- $||R|| \simeq 9.7 \cdot 10^{-13}$.
+
+При $\varepsilon = 10^{-2}$ -- $||R|| \simeq 4.5 \cdot 10^{-13}$.
+
+Далее с уменьшением $\varepsilon$ постепенно возрастает значение $||R||$ и достигает $0.75$ при $\varepsilon = 10^{-15}$.
+
+На интервале $(10^{-16}, 10^{-15})$ $||R||$ принимает значения от 2 до 5.
+
+При $\varepsilon = 10^{-16}$ происходит резкое возрастание нормы матрицы R до 129.
+
+При дальнейшем уменьшении $\varepsilon$ вплоть до 0 $||R||$ остается 129.\\[3mm]
+   
+   На рисунках \ref{pic:demo1}, \ref{pic:demo2} и \ref{pic:demo3} изображен вывод программы, иллюстрирующий наблюдения, для $\varepsilon = 10^{-2}, 10^{-6}, 10^{-10}, 10^{-15}, 10^{-16}, 0$.
+
 \begin{figure}[H]
-	\begin{center}
-		\includegraphics[scale=0.70]{table_10_7}
-		\caption{Вывод программы с абсолютной погрешностью $10^{-7}$}
-		\label{pic:demo1} % название для ссылок внутри кода
-	\end{center}
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.60in]{2}
+        \caption{при $\varepsilon = 10^{-2}$}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.60in]{6}
+        \caption{при $\varepsilon = 10^{-6}$}
+    \end{subfigure}
+    \caption{Вывод программы}
+    \label{pic:demo1}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{center}
-		\includegraphics[scale=0.70]{table_10_13}
-		\caption{Вывод программы с абсолютной погрешностью $10^{-13}$} 
-		\label{pic:demo2} % название для ссылок внутри кода
-	\end{center}
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.60in]{10}
+        \caption{при $\varepsilon = 10^{-10}$}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.60in]{15}
+        \caption{при $\varepsilon = 10^{-15}$}
+    \end{subfigure}
+    \caption{Вывод программы}
+    \label{pic:demo2}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{center}
-		\includegraphics[scale=0.70]{table_10_19}
-		\caption{Вывод программы с абсолютной погрешностью $10^{-19}$} 
-		\label{pic:demo3} % название для ссылок внутри кода
-	\end{center}
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.60in]{16}
+        \caption{при $\varepsilon = 10^{-16}$}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.60in]{0}
+        \caption{при $\varepsilon = 0$}
+    \end{subfigure}
+    \caption{Вывод программы}
+    \label{pic:demo3}
 \end{figure} 
- 
-  Над каждой таблицей указана установленная абсолютная погрешность вычисления интеграла по \textbf{QUANC8}. В столбце \textbf{x\_k} находятся точки, в которых были посчитаны значения интерполяционного полинома Лагранжа (столбец \textbf{lagrange}), значения интерполяционного сплайн-полинома (столбец \textbf{spline}) и точные значения (по \textbf{QUANC8} с высокой точностью) таблично-заданной функции (столбец \textbf{exact value by QUANC8}). Значения выведены с 16-ю разрядами после точки. 
- 
- Экспериментально было определено, что установка абсолютной погрешности ниже чем $10^{-19}$ не имеет смысла, потому что реальная абсолютная погрешность, вычисляемая программно, остаётся больше, чем $10^{-19}$. Это отражено на рисунке \ref{pic:demo4}.
+
+На рисунках \ref{pic:graphic1} и \ref{pic:graphic2} изображены графики зависимости нормы матрицы от $\varepsilon$ на всем интервале и на отрезке $[10^{-16}, 10^{-1}]$ соответственно.
 
 \begin{figure}[H]
 \begin{center}
-	\begin{subfigure}[b]{0.24\textwidth}
-		\includegraphics[scale=0.46]{quanc8_10_7}
-		\caption{\\Для абсолютной \\погрешности $10^{-7}$}
-		\label{pic:demo4:1}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.24\textwidth}
-		\includegraphics[scale=0.46]{quanc8_10_13}
-		\caption{\\Для абсолютной \\погрешности $10^{-13}$}
-		\label{pic:demo4:2}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.24\textwidth}
-		\includegraphics[scale=0.46]{quanc8_10_19}
-		\captionsetup{justification=centering}
-		\caption{\\Для абсолютной \\погрешности $10^{-19}$}
-		\label{pic:demo4:3}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.24\textwidth}
-		\includegraphics[scale=0.46]{quanc8_10_20}
-		\captionsetup{justification=centering}
-		\caption{\\Для абсолютной \\погрешности $10^{-20}$}
-		\label{pic:demo4:4}
-	\end{subfigure}
-	\caption{Вывод информации о вычислениях функцией QUANC8}
-	\label{pic:demo4}
+	\begin{tikzpicture} [every plot/.append style={thick}]
+		\begin{axis}[
+			height=0.25\textheight,
+			width=0.9\textwidth,
+			xlabel={$\varepsilon$},
+			ylabel={$||R||$},
+			xlabel near ticks,
+			ylabel near ticks,			
+			xmax=1,
+			xmin=0,
+			ymax=140,
+			ymin=-10,
+			xmode=log,
+			log basis x=10,			
+			grid=major
+		]
+		\addplot table[x=epsilon,y=norm,col sep=comma]{data/norm_full.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Зависимость нормы матрицы R от $\varepsilon$. Полный интервал}
+	\label{pic:graphic1}
+\end{center}
+\end{figure}
+
+~
+
+\begin{figure}[H]
+\begin{center}
+	\begin{tikzpicture} [every plot/.append style={thick}]
+		\begin{axis}[
+			height=0.35\textheight,
+			width=0.9\textwidth,
+			xlabel={$\varepsilon$},
+			ylabel={$||R||$},
+			xlabel near ticks,
+			ylabel near ticks,
+			xmax=0.2,
+			xmin=1e-16,
+			ymax=5.2,
+			ymin=-0.2,
+			xmode=log,
+			log basis x=10,			
+			grid=major
+		]
+		\addplot table[x=epsilon,y=norm,col sep=comma]{data/norm_right.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Зависимость нормы матрицы R от $\varepsilon$. Отрезок $[10^{-16}, 10^{-1}]$}
+	\label{pic:graphic2}
 \end{center}
 \end{figure}
 
 \section{Выводы}
+В результате работы была исследована зависимость нормы матрицы R от $\varepsilon$. При $\varepsilon = 10^{-13} \dots 10^{-1}$ значение $||R||$ близко к нулю, что не противоречит здравому смыслу, так как аналитически вычисленная матрица R (\textit{нулевая}) имеет норму 0. При последовательном уменьшении $\varepsilon$ до 0 значение нормы матрицы монотонно возрастает (за исключением интервала $(10^{-16}, 10^{-15})$) и достигает предела приблизительно равного 129.
 
-По результату работы программы можно заметить, что для абсолютной погрешности, равной $10^{-7}$, $10^{-13}$ и $10^{-19}$, точность вычисления значений полинома Лагранжа равна от 14 до 16 знаков после точки на всём интервале, а точность вычисления значений сплайн-полинома равна от 3 - 4 знаков после точки по краям интервала до 6 знаков после точки в середине интервала. Таким образом, интерполяционный полином Лагранжа больше подходит для интерполяции заданной функции, если критерием близости является равенство именно в конкретном определённом наборе точек.% Если критерий близости другой, то из полученных данных нельзя сделать вывод о преимуществе одного интерполяционного полинома над другим.
-
+Итак, применение стандартных функций \textbf{decomp} и \textbf{solve} для получения заданной матрицы R из заданной матрицы A, заполненной числами с плавающей запятой двойной точности, целесообразно при $\varepsilon = 10^{-13} \dots 10^{-1}$.
 \newpage
 
 \section*{Приложение 1. Листинги кода}
+
+\lstinputlisting[
+	label=code:Lab2,
+	caption={Lab2.java},% для печати символ '_' требует выходной символ '\'
+]{../../../app/src/main/java/com/lamtev/comp_maths_labs/lab2/app/Lab2.java}
+\parindent=1cm % командна \lstinputlisting сбивает параментры отступа
+
+\newpage
+
+\captionof{lstlisting}{Конструктор Matrix.}
+\lstinputlisting[label=code:Matrix:Matrix, linerange={27-32}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Метод Matrix::Identity.\\ Возвращает единичную матрицу указанного порядка}
+\lstinputlisting[label=code:Matrix:Identity, linerange={19-25}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Метод Matrix::inverted.\\ Возвращает обратную матрицу к данной}
+\lstinputlisting[label=code:Matrix:inverted, linerange={133-158}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Метод Matrix::multiply.\\ Возвращает матрицу, являющуюся результатом произведения данной матрицы с матрицейб переданной в качестве аргумента.}
+\lstinputlisting[label=code:Matrix:multiply, linerange={108-119}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Метод Matrix::minus.\\ Возвращает матрицу, являющуюся результатом разности данной матрицы с матрицей, переданной в качестве аргумента.}
+\lstinputlisting[label=code:Matrix:minus, linerange={97-106}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Метод
+Matrix::normAsMaximumAbsoluteColumnSum.\\ Возвращает ранее вычисленную норму (максимальную абсолютную сумму елементов внутри одного столбца) матрицы.}
+\lstinputlisting[label=code:Matrix:normAsMaximumAbsoluteColumnSum, linerange={78-80}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Метод
+Matrix::calculateNormAsMaximumAbsoluteColumnSum.\\ Вычисляет норму (максимальную абсолютную сумму елементов внутри одного столбца) матрицы.}
+\lstinputlisting[label=code:Matrix:calculateNormAsMaximumAbsoluteColumnSum, linerange={250-263}]{../../../matrix_lib/src/main/java/com/lamtev/comp_maths_labs/lab2/matrix_lib/Matrix.java}
+\parindent=1cm
 
 \end{document}

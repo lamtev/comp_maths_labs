@@ -1,12 +1,16 @@
 package com.lamtev.comp_maths_labs.lab2.app;
 
-import com.lamtev.comp_maths_labs.lab2.Matrix;
+import com.lamtev.comp_maths_labs.lab2.matrix_lib.Matrix;
 
 import static java.lang.StrictMath.*;
 
 public final class Lab2 {
 
     public static void main(String[] args) {
+        doLab2();
+    }
+
+    private static void doLab2() {
         final int N = 5;
         final double[] EPSILONS = {
                 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6,
@@ -20,7 +24,7 @@ public final class Lab2 {
             Matrix A_INVERTED = A.inverted();
             Matrix R = A_INVERTED.multiply(A).minus(Matrix.Identity(5));
 
-            printResult(epsilon, A, A_INVERTED, R);
+            printResult(epsilon, A, R);
         }
     }
 
@@ -46,14 +50,14 @@ public final class Lab2 {
         return new Matrix(matrixArray);
     }
 
-    private static void printResult(double epsilon, Matrix a, Matrix aInverted, Matrix r) {
+    private static void printResult(double epsilon, Matrix a, Matrix r) {
         System.out.println(
-                "epsilon: " + epsilon + "\n" +
+                "epsilon = " + epsilon + "\n" +
                         "||R|| = " + r.normAsMaximumAbsoluteColumnSum()
         );
         System.out.println("Matrix A:");
         System.out.println(a);
-        System.out.println("Matrix R = A\u207B\u00B9 * A:");
+        System.out.println("Matrix R = A\u207B\u00B9A:");
         System.out.println(r);
         System.out.println();
     }

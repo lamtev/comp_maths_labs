@@ -19,14 +19,11 @@ script:
 before_deploy:
   - sudo mv ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}.pdf ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
   - sudo chmod 777 ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
-  - sudo mv ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/refman.pdf ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/${LAB}_documentation.pdf
-  - sudo chmod 777 ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/${LAB}_documentation.pdf
   
 deploy:
   provider: releases 
   api_key: "$GITHUB_DEPLOY_TOKEN" 
   file: 
-    - ${TRAVIS_BUILD_DIR}/${LAB}/report/doxygen/latex/${LAB}_documentation.pdf
     - ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
   skip_cleanup: true 
   on: 

@@ -14,14 +14,14 @@ void solve(int n, double *a, double *b, int *ipvt) {
     t = b[m - 1];
     b[m - 1] = b[k - 1];
     b[k - 1] = t;
-    for (i = kp1; i <= n; i++) b[i - 1] = b[i - 1] + a[(i - 1) * n + (k - 1)] * t;
+    for (i = kp1; i <= n; i++) b[i - 1] += a[(i - 1) * n + (k - 1)] * t;
   }
   for (kb = 1; kb <= nm1; kb++) {
     km1 = n - kb;
     k = km1 + 1;
-    b[k - 1] = b[k - 1] / a[(k - 1) * n + (k - 1)];
+    b[k - 1] /= a[(k - 1) * n + (k - 1)];
     t = -b[k - 1];
-    for (i = 1; i <= km1; i++) b[i - 1] = b[i - 1] + a[(i - 1) * n + (k - 1)] * t;
+    for (i = 1; i <= km1; i++) b[i - 1] += a[(i - 1) * n + (k - 1)] * t;
   }
   b[0] /= a[0];
 }
@@ -42,7 +42,7 @@ void decomp(int n, double *a, double *cond, int *ipvt, double *work) {
   anorm = 0.0;
   for (j = 1; j <= n; j++) {
     t = 0.0;
-    for (i = 1; i <= n; i++) t = t + fabs(a[(i - 1) * n + (j - 1)]);
+    for (i = 1; i <= n; i++) t += fabs(a[(i - 1) * n + (j - 1)]);
     if (t > anorm) anorm = t;
   }
   for (k = 1; k <= nm1; k++) {
