@@ -194,8 +194,8 @@ public final class Matrix {
             for (Double elem : row) {
                 int currLen = (
                         elem.isNaN() || elem.isInfinite() ?
-                        elem.toString() :
-                        decimalFormat.format(elem.doubleValue())
+                                elem.toString() :
+                                decimalFormat.format(elem.doubleValue())
                 ).length();
 
                 if (currLen > maxLen) {

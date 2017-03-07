@@ -1,18 +1,19 @@
 package com.lamtev.comp_maths_labs.lab2;
 
-import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
+import jnr.ffi.LibraryLoader;
+import jnr.ffi.Memory;
+import jnr.ffi.Pointer;
+import jnr.ffi.Runtime;
 import org.apache.commons.lang3.mutable.MutableDouble;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
-//TODO migrate from JNA to JNR
-class MatrixUtil {
+public class MatrixUtil {
 
     public static void decomp(double[][] matrix, MutableDouble cond, int[] iptv, double[] work) {
         final int ORDER = matrix.length;
@@ -24,7 +25,6 @@ class MatrixUtil {
         ForsytheMatrixLibrary.INSTANCE.decomp(ORDER, data, condPtr, iptv, work);
         updateMatrix(matrix, ORDER, data);
         cond.setValue(condPtr.getDouble(0));
-        condPtr.clear(Double.BYTES);
     }
 
     public static void solve(double[][] matrix, double[] vector, int[] ipvt) {
@@ -45,10 +45,13 @@ class MatrixUtil {
     }
 
     private static Pointer getCondAsPointer(MutableDouble cond) {
-        Pointer condPtr = new Memory(Double.BYTES);
+        Pointer condPtr = Memory.allocate(
+                Runtime.getRuntime(ForsytheMatrixLibrary.INSTANCE),
+                Double.BYTES
+        );
         double[] condArr = new double[1];
         condArr[0] = cond.doubleValue();
-        condPtr.write(0, condArr, 0, 1);
+        condPtr.put(0, condArr, 0, 1);
         return condPtr;
     }
 
@@ -63,9 +66,11 @@ class MatrixUtil {
 
     private static final String FORSYTHE_MATRIX_LIBRARY_PREFIX = "libforsythe_matrix";
 
-    private interface ForsytheMatrixLibrary extends Library {
-        ForsytheMatrixLibrary INSTANCE = (ForsytheMatrixLibrary)
-                Native.loadLibrary(pathToLib(), ForsytheMatrixLibrary.class);
+    public interface ForsytheMatrixLibrary {
+
+        ForsytheMatrixLibrary INSTANCE = LibraryLoader.create(
+                ForsytheMatrixLibrary.class).load(pathToLib()
+        );
 
         void decomp(int n, double[] a, Pointer cond, int[] ipvt, double[] work);
 
@@ -76,9 +81,13 @@ class MatrixUtil {
     private static String pathToLib() {
         Path start = Paths.get("").toAbsolutePath();
         try {
-            return Files.walk(start)
+            Optional<Path> path = Files.walk(start).parallel()
                     .filter(MatrixUtil::isLibrary)
-                    .findFirst().get().toAbsolutePath().toString();
+                    .findFirst();
+            if (path.isPresent()) {
+                return path.get().toAbsolutePath().toString();
+            }
+            throw new FileNotFoundException(FORSYTHE_MATRIX_LIBRARY_PREFIX + " shared lib not found");
         } catch (IOException e) {
             e.printStackTrace();
         }

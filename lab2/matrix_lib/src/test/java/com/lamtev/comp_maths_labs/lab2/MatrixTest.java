@@ -75,7 +75,7 @@ public class MatrixTest {
 
     }
 
-    private final static double ERROR = 1e-9;
+    private final static double ERROR = 1e-12;
 
     private final static Matrix MATRIX1 = new Matrix(
             new double[][]{
