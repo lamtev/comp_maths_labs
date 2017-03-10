@@ -1,5 +1,5 @@
-﻿#ifndef _MATRIX
-#define _MATRIX
+﻿#ifndef MATRIX_H
+#define MATRIX_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,4 +13,4 @@ void solve(int n, double *a, double *b, int *ipvt);
 }
 #endif
 
-#endif //_MATRIX
+#endif //MATRIX_H

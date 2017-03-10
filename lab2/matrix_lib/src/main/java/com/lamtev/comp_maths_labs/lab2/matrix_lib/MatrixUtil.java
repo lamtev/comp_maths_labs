@@ -17,11 +17,8 @@ public class MatrixUtil {
 
     public static void decomp(double[][] matrix, MutableDouble cond, int[] iptv, double[] work) {
         final int ORDER = matrix.length;
-
         double[] data = getMatrixAsLinearArray(matrix, ORDER);
-
         Pointer condPtr = getCondAsPointer(cond);
-
         ForsytheMatrixLibrary.INSTANCE.decomp(ORDER, data, condPtr, iptv, work);
         updateMatrix(matrix, ORDER, data);
         cond.setValue(condPtr.getDouble(0));

@@ -11,3 +11,4 @@ build
 Makefile
 doxygen
 *.dll
+*.so
