@@ -6,25 +6,23 @@
 \include{titlepage}
 
 \section{Цель работы}
-Численно решить систему дифференциальных уравнений.
+Численно решить дифференциальное уравнение 2-го порядка.
 
 \section{Решаемые задачи}
 \begin{enumerate}
 
 \item Привести дифференциальное уравнение второго порядка
 
-\begin{displaymath}
+\label{equation:1}
+\begin{equation}
 	t(t+1)y'' + (3t+2)y'  + y = 0
-\end{displaymath}
+\end{equation}
 
 к системе двух дифференциальных уравнений первого порядка.
-
 
 	Начальные условия: $\left.y \right|_{t=1} = 1$, $\left.y' \right|_{t=1} = -1$, $t \in[1, 2]$  
 
     Точное решение: $y(t)=\frac{1}{t}$	
-		
-
 
 \item Решить с шагом $h = 0.1$
 
@@ -37,47 +35,83 @@
 
 \end{enumerate}
 
-
 \section{Ход выполнения работы}
 
-В ходе выполнения работы было разработано программное обеспечение на языке программирования \textbf{java}, позволяющее решить поставленные задачи. Данное программное обеспечение включает в себя:
+Вначале дифференциальное уравнение \ref{equation:1} при помощи подстановок $x_1(t) = y(t)$ и $x_2(t) = y'(t)$ было приведено к системе:
+
+\begin{displaymath}
+\begin{cases}
+	x'_1(t) = 0 \cdot x_1(t) + 1 \cdot x_2(t)
+	\\
+	x'_2(t) = - \frac{1}{t(t+1)} \cdot x_1(t) - \frac{3t+2}{t(t+1)} \cdot x_2(t)
+\end{cases}
+\end{displaymath}
+
+Затем было разработано программное обеспечение на языке программирования \textbf{java}, позволяющее решить поставленные задачи. Данное программное обеспечение включает в себя:
 \begin{itemize}
 
-\item Библиотеку \textbf{MatrixUtil} с функциями \textbf{decomp} и \textbf{solve}, которые содержат вызовы стандартных форсайтовских функций \textbf{decomp} и \textbf{solve}, разработанных на языке программирования \textbf{с}, из динамической библиотеки.
+\item Библиотеку \textbf{Diffeqs}.
 
-\item Библиотеку \textbf{Matrix}, позволяющую совершать различные действия над матрицами, в том числе, \textit{обращение, произведение, вычитание, вычисление нормы}, которые необходимы для решения поставленных задач.
+ Она включает в себя функцию \textbf{rkf45}, которая содержит вызов стандартной форсайтовской функции \textbf{rkf45}, разработанной на языке программирования \textbf{с}.
 
- \textit{Обращение} матрицы реализовано как n итераций решения системы $\textbf{A}x = \textbf{B}$ при помощи функций \textbf{decomp} и \textbf{solve} c $\textbf{B}$ -- i-м столбцом единичной матрицы на i-й итерации и n -- порядком матрицы. Реализация представлена в листинге \ref{code:Matrix:inverted}.
+ Еще \textbf{Diffeqs} содержит самостоятельно написанную функцию \textbf{eulerCauchy}. Данная функция численно решает дифференциальное уравнение, используя метод Эйлера-Коши 2-й степени:
  
- Реализации \textit{произведения, вычитания, вычисления нормы} представлены в листингах \ref{code:Matrix:multiply}, \ref{code:Matrix:minus} и \ref{code:Matrix:calculateNormAsMaximumAbsoluteColumnSum} соответственно.
+\begin{displaymath}
+\begin{cases}
+	x_{n+1}^{*} = x_n + hf(t_n, x_n)
+	\\
+	x_{n+1} = x_n + \frac{h}{2} \Big (f(t_n, x_n) + f(t_{n+1}, x_{n+1}^{*}) \Big) 
+\end{cases}
+\end{displaymath} 
+ 
+ Функция \textbf{eulerCauchy} представлена в листинге \ref{code:EulerCauchy}.
 
-\item Приложение, решающее поставленные задачи и использующее ранее перечисленные библиотеки (листинг \ref{code:Lab2}).
+\item Приложение, решающее решающее заданную систему дифференциальных уравнений точно (по формуле $y(t) = \frac{1}{t}$), при помощи \textbf{rkf45} и функцией \textbf{eulerCauchy}, реализующей метод Эйлера-Коши (листинг \ref{code:Lab3}).
 
-\end{itemize} 
+\end{itemize}
+
+На рисунках \ref{pic:demo1} и \ref{pic:demo2} изображен вывод работы программы: результат решения системы дифференциальных уравнений на отрезке $1\dots2$ с шагом $h=0.1$ стандартной функцией \textbf{rkf45}, функцией \textbf{eulerCauchy} и по аналитически полученной точной формуле соответственно.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
-        \includegraphics[height=1.75in]{rkf45}
+        \includegraphics[height=1.72in]{rkf45}
         \caption{RKF45}
     \end{subfigure}%
     ~ 
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
-        \includegraphics[height=1.75in]{euler_cauchy}
+        \includegraphics[height=1.72in]{euler_cauchy}
         \caption{Метод Эйлера-Коши}
     \end{subfigure}
     \caption{Вывод программы}
     \label{pic:demo1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=2.2in]{exact}
+    \caption{Вывод программы: точное решение}
+    \label{pic:demo2}
 \end{figure} 
 
-На рисунках \ref{pic:graphic1} и \ref{pic:graphic2} изображены графики зависимости нормы матрицы от $\varepsilon$ на всем интервале и на отрезке $[10^{-16}, 10^{-1}]$ соответственно.
+По выводу программы видно, что значения, полученные с использованием функции \textbf{rkf45}, совпадают с точными значениями с точностью 7 - 8 знаков после точки, а значения, полученные методом Эйлера-Коши имеют точность 1 - 2 знака после точки. 
 
 \section{Выводы}
+
+Решение системы дифференциальных уравнений при помощи функции \textbf{rkf45} оказалось более точным, чем решение методом Эйлера-Коши. Полученный результат был ожидаем, потому что функция \textbf{rkf45} реализует методы Рунге-Кутты 4-й и 5-й степени, в то время как метод Эйлера-Коши имеет лишь 2-ую степень.
 
 \newpage
 
 \section*{Приложение 1. Листинги кода}
+
+\captionof{lstlisting}{Приложение}
+\lstinputlisting[label=code:Lab3, linerange={15-87}]{../../../app/src/main/java/com/lamtev/comp_maths_labs/lab3/app/Lab3.java}
+\parindent=1cm
+
+\captionof{lstlisting}{Функция eulerCauchy}
+\lstinputlisting[label=code:EulerCauchy, linerange={7-39}]{../../../diffeqs_lib/src/main/java/com/lamtev/comp_maths_labs/lab3/diffeqs_lib/EulerCauchy.java}
+\parindent=1cm
 
 \end{document}

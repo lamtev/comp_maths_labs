@@ -13,25 +13,19 @@ import static com.lamtev.comp_maths_labs.lab3.diffeqs_lib.RKF45.rkf45;
 public class Lab3 {
 
     private static final int N = 2;
-
     private static final double[] INITIAL_CONDITIONS = {1, -1};
-
     private static final double LEFT = 1;
-
     private static final double RIGHT = 2;
-
     private static final double STEP = 0.1;
 
-    private static final Fun FUN = (t, X, DX) -> {
-        DX[0] = 0 * X[0] + 1 * X[1];
-        DX[1] = -(1 / (t * (t + 1))) * X[0] - (3 * t + 2) / (t * (t + 1)) * X[1];
+    private static final Fun FUN = (t, x, dx) -> {
+        dx[0] = 0 * x[0] + 1 * x[1];
+        dx[1] = -(1 / (t * (t + 1))) * x[0] - (3 * t + 2) / (t * (t + 1)) * x[1];
     };
 
     public static void main(String[] args) {
         exactDemo();
-        System.out.println();
         rkf45Demo();
-        System.out.println();
         eulerCauchyDemo();
     }
 
@@ -66,7 +60,6 @@ public class Lab3 {
         MutableInt iFlag = new MutableInt(1);
         double[] work = new double[15];
         int[] iWork = new int[5];
-
         System.out.println("RKF45");
         printTAndX();
         for (double tout = LEFT; tout <= RIGHT + STEP; tout += STEP) {
@@ -77,13 +70,13 @@ public class Lab3 {
     }
 
     private static void printTAndX() {
-        System.out.println("t\t\tx");
+        System.out.println("t\t\tx = (x1, x2)");
     }
 
     private static void printTAndXValues(double t, double[] x) {
         System.out.format(Locale.US, "%1.1f\t\t", t);
-        System.out.format(Locale.US, "(%1.5f, ", x[0]);
-        System.out.format(Locale.US, "%1.5f)\n", x[1]);
+        System.out.format(Locale.US, "(%1.8f, ", x[0]);
+        System.out.format(Locale.US, "%1.8f)\n", x[1]);
     }
 
 }

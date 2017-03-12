@@ -20,7 +20,7 @@ public class DiffeqsUtil {
         void perform(double t, double[] x, double[] dx);
     }
 
-    private static final String FORSYTHE_RKF45_LIBRARY_PREFIX = "forsythe_rkf45";
+    private static final String FORSYTHE_RKF45_LIBRARY_PREFIX = "libforsythe_rkf45";
 
     interface ForsytheRKF45Library extends Library {
 
@@ -32,7 +32,7 @@ public class DiffeqsUtil {
         }
 
         void rkf45(Fun fun, int n, double[] x, DoubleByReference t, DoubleByReference tOut,
-                DoubleByReference relErr, DoubleByReference absErr,
+                   DoubleByReference relErr, DoubleByReference absErr,
                    IntByReference iFlag, double[] work, int[] iWork);
 
     }
