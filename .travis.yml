@@ -12,11 +12,17 @@ matrix:
     - env: LAB="lab2"
     - env: LAB="lab3"
 
+before_install:
+  - sudo pip install --user codecov
+    
 script:
   - cd ${TRAVIS_BUILD_DIR}/${LAB}
   - chmod +x build.sh
   - ./build.sh
 
+after_success:
+  - cd ${TRAVIS_BUILD_DIR}/${LAB} && bash <(curl -s https://codecov.io/bash)
+  
 before_deploy:
   - sudo mv ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}.pdf ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
   - sudo chmod 777 ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
