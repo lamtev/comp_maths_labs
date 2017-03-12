@@ -1,0 +1,12 @@
+jar {
+    manifest {
+        attributes("Main-Class": "com.lamtev.comp_maths_labs.lab3.app.Lab3")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+dependencies {
+    compile project(':diffeqs_lib')
+}

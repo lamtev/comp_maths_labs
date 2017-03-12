@@ -1,4 +1,4 @@
-#lib
+#std_lib
 
 set(
         STD_LIB_SOURCE_FILES

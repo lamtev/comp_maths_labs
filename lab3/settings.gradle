@@ -1,0 +1,4 @@
+rootProject.name = 'lab3'
+include 'diffeqs_lib'
+include 'app'
+

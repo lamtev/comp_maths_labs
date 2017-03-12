@@ -1,0 +1,75 @@
+\include{settings}
+
+\begin{document}	% начало документа
+
+% Титульная страница
+\include{titlepage}
+
+\section{Цель работы}
+Исследовать зависимость нормы матрицы от возмущения исходных данных.
+
+\section{Решаемые задачи}
+\begin{enumerate}
+
+\item Составить процедуру вычисления по заданной матрице $A_{N \times N}$ матрицы \\$R = A^{-1} A - E$ и её нормы $||R|| = \max_{k} \sum_j^N |R_{jk}|$.
+
+\item Построить матрицы A при $x_k = \frac{1 + cos(k)}{sin^2(k)}, k = 1, \dots, 4$ и $x_5 = \frac{1+cos(1)}{sin^2(1 + \varepsilon)}$, для значений $\varepsilon = 10^{-1}, 10^{-2}, 10^{-3}, \dots, 10^{-16}, 0$ и $N = 5$.
+
+\begin{displaymath}
+A=
+  \begin{pmatrix}
+    1 & 1 & \dots & 1 \\
+    x_1 & x_2 & \dots & x_N \\
+    \dots & \dots & \dots & \dots & \\
+    x_1^{N-1} & x_2^{N-1} & \dots & x_N^{N-1} \\
+  \end{pmatrix}
+\end{displaymath}
+
+
+\item  Исследовать зависимость погрешности вычисления $||R||$ от $\varepsilon$.
+\end{enumerate}
+
+
+\section{Ход выполнения работы}
+
+В ходе выполнения работы было разработано программное обеспечение на языке программирования \textbf{java}, позволяющее решить поставленные задачи. Данное программное обеспечение включает в себя:
+\begin{itemize}
+
+\item Библиотеку \textbf{MatrixUtil} с функциями \textbf{decomp} и \textbf{solve}, которые содержат вызовы стандартных форсайтовских функций \textbf{decomp} и \textbf{solve}, разработанных на языке программирования \textbf{с}, из динамической библиотеки.
+
+\item Библиотеку \textbf{Matrix}, позволяющую совершать различные действия над матрицами, в том числе, \textit{обращение, произведение, вычитание, вычисление нормы}, которые необходимы для решения поставленных задач.
+
+ \textit{Обращение} матрицы реализовано как n итераций решения системы $\textbf{A}x = \textbf{B}$ при помощи функций \textbf{decomp} и \textbf{solve} c $\textbf{B}$ -- i-м столбцом единичной матрицы на i-й итерации и n -- порядком матрицы. Реализация представлена в листинге \ref{code:Matrix:inverted}.
+ 
+ Реализации \textit{произведения, вычитания, вычисления нормы} представлены в листингах \ref{code:Matrix:multiply}, \ref{code:Matrix:minus} и \ref{code:Matrix:calculateNormAsMaximumAbsoluteColumnSum} соответственно.
+
+\item Приложение, решающее поставленные задачи и использующее ранее перечисленные библиотеки (листинг \ref{code:Lab2}).
+
+\end{itemize} 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.75in]{rkf45}
+        \caption{RKF45}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.75in]{euler_cauchy}
+        \caption{Метод Эйлера-Коши}
+    \end{subfigure}
+    \caption{Вывод программы}
+    \label{pic:demo1}
+\end{figure} 
+
+На рисунках \ref{pic:graphic1} и \ref{pic:graphic2} изображены графики зависимости нормы матрицы от $\varepsilon$ на всем интервале и на отрезке $[10^{-16}, 10^{-1}]$ соответственно.
+
+\section{Выводы}
+
+\newpage
+
+\section*{Приложение 1. Листинги кода}
+
+\end{document}
