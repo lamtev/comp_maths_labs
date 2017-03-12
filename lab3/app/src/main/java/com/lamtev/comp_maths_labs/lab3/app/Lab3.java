@@ -28,9 +28,22 @@ public class Lab3 {
     };
 
     public static void main(String[] args) {
+        exactDemo();
+        System.out.println();
         rkf45Demo();
         System.out.println();
         eulerCauchyDemo();
+    }
+
+    private static void exactDemo() {
+        double x[] = new double[N];
+        System.out.println("Exact solution");
+        printTAndX();
+        for (double t = LEFT; t <= RIGHT + STEP; t += STEP) {
+            x[0] = 1 / t;
+            x[1] = -1 / (t * t);
+            printTAndXValues(t, x);
+        }
     }
 
     private static void eulerCauchyDemo() {
@@ -48,8 +61,8 @@ public class Lab3 {
         double x[] = Arrays.copyOf(INITIAL_CONDITIONS, N);
         MutableDouble t = new MutableDouble(1);
         MutableDouble tOut = new MutableDouble();
-        MutableDouble relErr = new MutableDouble(0);
-        MutableDouble absErr = new MutableDouble(0);
+        MutableDouble relErr = new MutableDouble(0.00001);
+        MutableDouble absErr = new MutableDouble(0.00001);
         MutableInt iFlag = new MutableInt(1);
         double[] work = new double[15];
         int[] iWork = new int[5];
@@ -72,6 +85,5 @@ public class Lab3 {
         System.out.format(Locale.US, "(%1.5f, ", x[0]);
         System.out.format(Locale.US, "%1.5f)\n", x[1]);
     }
-
 
 }
