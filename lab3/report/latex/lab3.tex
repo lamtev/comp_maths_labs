@@ -37,14 +37,31 @@
 
 \section{Ход выполнения работы}
 
-Вначале дифференциальное уравнение \ref{equation:1} при помощи подстановок $x_1(t) = y(t)$ и $x_2(t) = y'(t)$ было приведено к системе:
+Вначале дифференциальное уравнение \ref{equation:1} засчёт подстановок $x_1(t) = y(t)$ и $x_2(t) = y'(t)$ было приведено к системе:
+
+%\begin{displaymath}
+%\begin{cases}
+%	x'_1(t) = 0 \cdot x_1(t) + 1 \cdot x_2(t)
+%	\\
+%	x'_2(t) = - \frac{1}{t(t+1)} \cdot x_1(t) - \frac{3t+2}{t(t+1)} \cdot x_2(t)
+%\end{cases}
+%\end{displaymath}
 
 \begin{displaymath}
-\begin{cases}
-	x'_1(t) = 0 \cdot x_1(t) + 1 \cdot x_2(t)
-	\\
-	x'_2(t) = - \frac{1}{t(t+1)} \cdot x_1(t) - \frac{3t+2}{t(t+1)} \cdot x_2(t)
-\end{cases}
+\begin{pmatrix}
+    x'_1(t) \\
+    x'_2(t) \\
+\end{pmatrix}
+  =
+\begin{pmatrix}
+    0 & 1 \\
+    - \frac{1}{t(t+1)} & \frac{3t+2}{t(t+1)} \\
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+    x_1(t) \\
+    x_2(t) \\
+\end{pmatrix}
 \end{displaymath}
 
 Затем было разработано программное обеспечение на языке программирования \textbf{java}, позволяющее решить поставленные задачи. Данное программное обеспечение включает в себя:
@@ -54,7 +71,7 @@
 
  Она включает в себя функцию \textbf{rkf45}, которая содержит вызов стандартной форсайтовской функции \textbf{rkf45}, разработанной на языке программирования \textbf{с}.
 
- Еще \textbf{Diffeqs} содержит самостоятельно написанную функцию \textbf{eulerCauchy}. Данная функция численно решает дифференциальное уравнение, используя метод Эйлера-Коши 2-й степени:
+ Еще \textbf{Diffeqs} содержит самостоятельно написанную функцию \textbf{eulerCauchy}. Данная функция численно решает дифференциальное уравнение, используя метод Эйлера-Коши 2-й степени.
  
 \begin{displaymath}
 \begin{cases}
@@ -70,48 +87,121 @@
 
 \end{itemize}
 
-На рисунках \ref{pic:demo1} и \ref{pic:demo2} изображен вывод работы программы: результат решения системы дифференциальных уравнений на отрезке $1\dots2$ с шагом $h=0.1$ стандартной функцией \textbf{rkf45}, функцией \textbf{eulerCauchy} и по аналитически полученной точной формуле соответственно.
+На рисунках \ref{pic:demo1} - \ref{pic:demo3} изображен вывод работы программы: результат решения системы дифференциальных уравнений на отрезке $[1, 2]$ с шагом $h=0.1$ стандартной функцией \textbf{rkf45} с установленной относительной погрешностью $10^{-13}$, функцией \textbf{eulerCauchy} и по аналитически полученной точной формуле соответственно.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
-        \centering
-        \includegraphics[height=1.72in]{rkf45}
-        \caption{RKF45}
-    \end{subfigure}%
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
-        \centering
-        \includegraphics[height=1.72in]{euler_cauchy}
-        \caption{Метод Эйлера-Коши}
-    \end{subfigure}
-    \caption{Вывод программы}
+    \includegraphics[height=2.2in]{rkf45}
+    \caption{Вывод программы: RKF45}
     \label{pic:demo1}
-\end{figure}
+\end{figure} 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=2.2in]{euler_cauchy}
+    \caption{Вывод программы: метод Эйлера-Коши}
+    \label{pic:demo2}
+\end{figure} 
 
 \begin{figure}[H]
     \centering
     \includegraphics[height=2.2in]{exact}
     \caption{Вывод программы: точное решение}
-    \label{pic:demo2}
+    \label{pic:demo3}
 \end{figure} 
 
-По выводу программы видно, что значения, полученные с использованием функции \textbf{rkf45}, совпадают с точными значениями с точностью 7 - 8 знаков после точки, а значения, полученные методом Эйлера-Коши имеют точность 1 - 2 знака после точки. 
+По выводу программы видно, что значения, полученные с использованием функции \textbf{rkf45}, совпадают с точными значениями с точностью 12 знаков после точки, а значения, полученные методом Эйлера-Коши имеют точность 1 - 2 знака после точки. 
+
+На рисунке \ref{pic:graphic1} изображены графики точного решения исходного дифференциального уравнения \ref{equation:1} и решения методом Эйлера-Коши:
+
+\begin{figure}[H]
+\begin{center}
+	\begin{tikzpicture} [every plot/.append style={thick}]
+		\begin{axis}[			
+			height=0.5\textheight,
+			width=1.0\textwidth,
+			legend pos=north east,
+			xlabel={$t$},
+			ylabel={$y(t)$},
+			xlabel near ticks,
+			ylabel near ticks,			
+			xmax=2.0,
+			xmin=1.0,
+			ymax=1.0,
+			ymin=0.5,
+			xmode=linear,			
+			grid=major
+		]
+		\addplot table[x=t,y=exactValue,col sep=comma]{data/exactValues.csv};
+		%\addplot table[x=t,y=rkf45Value,col sep=comma]{data/rkf45Values.csv};
+		\addplot table[x=t,y=eulerCauchyValue,col sep=comma]{data/eulerCauchyValues.csv};
+		\legend{Точное решение: $\frac{1}{t}$, Метод Эйлера-Коши}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{График точного решения и решения методом Эйлера-Коши}
+	\label{pic:graphic1}
+\end{center}
+\end{figure}
+
+По графику на рисунке \ref{pic:graphic2} видно, что чем ближе к концу отрезка $[1, 2]$, тем сильнее решение методом Эйлера-Коши отклоняется от точного решения.
+
+Построим график погрешности решения метом Эйлера-Коши на отрезке $[1, 2]$:
+
+\begin{figure}[H]
+\begin{center}
+	\begin{tikzpicture} [every plot/.append style={thick}]
+		\begin{axis}[			
+			height=0.25\textheight,
+			width=1.0\textwidth,
+			xlabel={$t$},
+			ylabel={$|\varepsilon(t)|$},
+			xlabel near ticks,
+			ylabel near ticks,			
+			xmax=2.0,
+			xmin=1.0,
+			ymax=0.0081,
+			ymin=0.0,
+			%ymode=log,
+			%log basis y=10, 
+			grid=major
+		]
+		\addplot table[x=t,y=eulerCauchyEpsilon,col sep=comma]{data/eulerCauchyEpsilons.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Погрешность решения методом Эйлера-Коши на каждом шаге на $[1, 2]$}
+	\label{pic:graphic2}
+\end{center}
+\end{figure}
+
+Локальная погрешность монотонно возрастает на отрезке $[1, 2]$ и принимает значения от 0 до $8 \cdot 10^{-3}$. Определим, является ли это нормой.
+
+Для метода 2-й степени формула приближения главного члена погрешности имеет вид: 
+\begin{displaymath}
+\varepsilon_{n+1} = \frac{h^3 \cdot x'''(\eta)}{3!}\text{, где $\eta \in a\dots b$}
+\end{displaymath}
+
+Вычислим приближенное значение локальной погрешности метода Эйлера-Коши на первом шаге:
+
+\begin{displaymath}
+\varepsilon_{1} = \frac{h^3 \cdot x'''(\eta)}{3!} = \left.\frac{h^3 \cdot \frac{-6}{t^4}}{6} \right|_{t=\eta} = \left.-\frac{h^3}{t^4} \right|_{t=\eta} = -\frac{{0.1}^3}{1^4} = -10^{-3}
+\end{displaymath}
+
+Получили, что значения реальной локальной погрешности на отрезке $[1, 2]$ пропорциональны значению теоретической локальной погрешности на первом шаге и превышают значение теоретической локальной погрешности (начиная с третьего шага) меньше, чем на порядок. Превышение объясняется накоплением глобальной погрешности.
 
 \section{Выводы}
 
-Решение системы дифференциальных уравнений при помощи функции \textbf{rkf45} оказалось более точным, чем решение методом Эйлера-Коши. Полученный результат был ожидаем, потому что функция \textbf{rkf45} реализует методы Рунге-Кутты 4-й и 5-й степени, в то время как метод Эйлера-Коши имеет лишь 2-ую степень.
+Решение системы дифференциальных уравнений при помощи функции \textbf{rkf45} оказалось более точным, чем решение методом Эйлера-Коши. Полученный результат был ожидаем, потому что функция \textbf{rkf45} реализует методы Рунге-Кутты 4-й и 5-й степени, в то время как метод Эйлера-Коши имеет лишь 2-ую степень. Точность, полученная при решении системы дифференциальных уравнений методом Эйлера-Коши оказалась сопоставимой с точностью метода 2-й степени и поэтому функция \textbf{eulerCauchy} скорее всего составлена верно.
 
 \newpage
 
 \section*{Приложение 1. Листинги кода}
 
 \captionof{lstlisting}{Приложение}
-\lstinputlisting[label=code:Lab3, linerange={15-87}]{../../../app/src/main/java/com/lamtev/comp_maths_labs/lab3/app/Lab3.java}
+\lstinputlisting[label=code:Lab3, linerange={1-162}]{../../../app/src/main/java/com/lamtev/comp_maths_labs/lab3/app/Lab3.java}
 \parindent=1cm
 
 \captionof{lstlisting}{Функция eulerCauchy}
-\lstinputlisting[label=code:EulerCauchy, linerange={7-39}]{../../../diffeqs_lib/src/main/java/com/lamtev/comp_maths_labs/lab3/diffeqs_lib/EulerCauchy.java}
+\lstinputlisting[label=code:EulerCauchy, linerange={1-41}]{../../../diffeqs_lib/src/main/java/com/lamtev/comp_maths_labs/lab3/diffeqs_lib/EulerCauchy.java}
 \parindent=1cm
 
 \end{document}
