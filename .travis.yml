@@ -11,6 +11,7 @@ matrix:
     - env: LAB="lab1"
     - env: LAB="lab2"
     - env: LAB="lab3"
+    - env: LAB="coursework"
     
 script:
   - cd ${TRAVIS_BUILD_DIR}/${LAB}
