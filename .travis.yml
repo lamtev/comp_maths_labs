@@ -25,6 +25,7 @@ before_deploy:
 deploy:
   provider: releases 
   api_key: "$GITHUB_DEPLOY_TOKEN" 
+  script: if [ LAB == "coursework" ]; then cd ${LAB} && ./deploy.sh && cd .. fi
   file: 
     - ${TRAVIS_BUILD_DIR}/${LAB}/report/latex/${LAB}_report.pdf
   skip_cleanup: true 
