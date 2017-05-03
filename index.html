@@ -11837,7 +11837,8 @@ $x_0(t) = 2 (1 - cos7t)$. Предположим, что пружина - лин
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077;-&#1088;&#1072;&#1073;&#1086;&#1090;&#1099;">&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077; &#1088;&#1072;&#1073;&#1086;&#1090;&#1099;<a class="anchor-link" href="#&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077;-&#1088;&#1072;&#1073;&#1086;&#1090;&#1099;">&#182;</a></h3><h4 id="&#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;-&#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072;-&#1076;&#1077;&#1084;&#1087;&#1092;&#1077;&#1088;&#1086;&#1074;">&#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077; &#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072; &#1076;&#1077;&#1084;&#1087;&#1092;&#1077;&#1088;&#1086;&#1074;<a class="anchor-link" href="#&#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;-&#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072;-&#1076;&#1077;&#1084;&#1087;&#1092;&#1077;&#1088;&#1086;&#1074;">&#182;</a></h4><p>Для начала вычислим значения $c^1$, $c^2$, $c^3$, $M$ и $K$:</p>
+<h3 id="&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077;-&#1088;&#1072;&#1073;&#1086;&#1090;&#1099;">&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077; &#1088;&#1072;&#1073;&#1086;&#1090;&#1099;<a class="anchor-link" href="#&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077;-&#1088;&#1072;&#1073;&#1086;&#1090;&#1099;">&#182;</a></h3><h4 id="&#1048;&#1085;&#1089;&#1090;&#1088;&#1091;&#1084;&#1077;&#1085;&#1090;&#1072;&#1083;&#1100;&#1085;&#1099;&#1077;-&#1089;&#1088;&#1077;&#1076;&#1089;&#1090;&#1074;&#1072;">&#1048;&#1085;&#1089;&#1090;&#1088;&#1091;&#1084;&#1077;&#1085;&#1090;&#1072;&#1083;&#1100;&#1085;&#1099;&#1077; &#1089;&#1088;&#1077;&#1076;&#1089;&#1090;&#1074;&#1072;<a class="anchor-link" href="#&#1048;&#1085;&#1089;&#1090;&#1088;&#1091;&#1084;&#1077;&#1085;&#1090;&#1072;&#1083;&#1100;&#1085;&#1099;&#1077;-&#1089;&#1088;&#1077;&#1076;&#1089;&#1090;&#1074;&#1072;">&#182;</a></h4><p>Все необходимые вычисления и визуализация полученных результатов производились при помощи языка программирования <strong>python 3.6</strong>. Для численного решения систем алгебраических и дифференциальных уравнений, а также численного интегрирования использовались функции стандартной библиотеки языка и функции популярных библиотек <strong>numpy</strong> и <strong>scipy</strong>. Графики построены при помощи библиотеки <strong>matplotlib</strong>.</p>
+<h4 id="&#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;-&#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072;-&#1076;&#1077;&#1084;&#1087;&#1092;&#1077;&#1088;&#1086;&#1074;">&#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077; &#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072; &#1076;&#1077;&#1084;&#1087;&#1092;&#1077;&#1088;&#1086;&#1074;<a class="anchor-link" href="#&#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;-&#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072;-&#1076;&#1077;&#1084;&#1087;&#1092;&#1077;&#1088;&#1086;&#1074;">&#182;</a></h4><p>Для начала вычислим значения $c^1$, $c^2$, $c^3$, $M$ и $K$:</p>
 
 </div>
 </div>
@@ -11898,7 +11899,7 @@ c_2 = 10.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Вычислим массу автомобиля:</p>
+<p>Вычислим массу автомобиля, решив нелинейное алгебраическое уравнение при помощи функции <strong>brentq</strong> из пакета <strong>scipy.optimize</strong>:</p>
 
 </div>
 </div>
@@ -11941,7 +11942,7 @@ c_2 = 10.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>и коэффициент упругости пружины:</p>
+<p>и коэффициент упругости пружины, вычислив определённый интеграл функцией <strong>quad</strong> из пакета <strong>scipy.integrate</strong>:</p>
 
 </div>
 </div>
@@ -12005,7 +12006,7 @@ error = 5.7496444811892876e-15
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Решим полученную систему уравнений при помощи функции <strong>odeint</strong> из пакета <strong>scipy.integrate</strong> для трёх разных демпферов  $D$ = $(r, c)$ на отрезке $[0, 4]$ с шагом 0.001</p>
+<p>Решим полученную систему уравнений при помощи функции <strong>odeint</strong> из пакета <strong>scipy.integrate</strong> для трёх разных демпферов  $D$ = $(r, c)$ на отрезке $[0, 4]$ с "шагом печати" 0.001</p>
 
 </div>
 </div>
@@ -12020,6 +12021,7 @@ error = 5.7496444811892876e-15
 <span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="n">t</span><span class="p">)))</span> <span class="o">-</span> <span class="n">r</span><span class="o">/</span><span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">14</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">14</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="n">t</span><span class="p">)))]</span>
+
 
 <span class="k">class</span> <span class="nc">Damper</span><span class="p">:</span>
     <span class="n">r</span> <span class="p">:</span> <span class="nb">float</span>   
@@ -13407,13 +13409,15 @@ zf8HGxpLWKYklywAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">amax</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fabs</span><span class="p">,</span> <span class="n">zeros</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">amax</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fabs</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">diff</span>
     
 <span class="k">def</span> <span class="nf">ro_quad</span><span class="p">(</span><span class="n">f1</span> <span class="p">:</span> <span class="n">array</span><span class="p">,</span> <span class="n">f2</span> <span class="p">:</span> <span class="n">array</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">((</span><span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="n">f1</span> <span class="p">:</span> <span class="n">array</span><span class="p">,</span> <span class="n">f2</span> <span class="p">:</span> <span class="n">array</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="n">f1</span><span class="p">:</span> <span class="n">array</span><span class="p">,</span> <span class="n">f2</span><span class="p">:</span> <span class="n">array</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">amax</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">f1</span> <span class="o">-</span> <span class="n">f2</span><span class="p">))</span>
+
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)):</span>
     <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -13451,7 +13455,8 @@ D3: ro^2 = 21777.92885009753, delta = 3.949934055528107
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Получили, что демпфер $D_2$ оказался лучше остальных по обоим критериям сравнения. За ним идет $D_1$. И последний - $D_3$.</p>
-<p>По графикам можно получить точно такие же выводы.</p>
+<p>По графикам можно получить точно такие же выводы. Кроме того, судя по графику, параметры демпфера влияют не только на
+амплитудные характеристики вертикального смещения центра тяжести автомобиля, но и на частотные характеристики.</p>
 
 </div>
 </div>
@@ -13461,7 +13466,7 @@ D3: ro^2 = 21777.92885009753, delta = 3.949934055528107
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="&#1054;&#1094;&#1077;&#1085;&#1082;&#1072;-&#1086;&#1073;&#1097;&#1077;&#1081;-&#1087;&#1086;&#1075;&#1088;&#1077;&#1096;&#1085;&#1086;&#1089;&#1090;&#1080;">&#1054;&#1094;&#1077;&#1085;&#1082;&#1072; &#1086;&#1073;&#1097;&#1077;&#1081; &#1087;&#1086;&#1075;&#1088;&#1077;&#1096;&#1085;&#1086;&#1089;&#1090;&#1080;<a class="anchor-link" href="#&#1054;&#1094;&#1077;&#1085;&#1082;&#1072;-&#1086;&#1073;&#1097;&#1077;&#1081;-&#1087;&#1086;&#1075;&#1088;&#1077;&#1096;&#1085;&#1086;&#1089;&#1090;&#1080;">&#182;</a></h4><p>Все вычисления производились при помощи функций из <strong>python</strong> библиотек <strong>numpy</strong> и <strong>scipy</strong>. Многие из них не предоставляют информацию о погрешности вычислений. Поэтому оценка будет грубой и будет производиться на основе тех данных, которые есть.</p>
+<h4 id="&#1054;&#1094;&#1077;&#1085;&#1082;&#1072;-&#1086;&#1073;&#1097;&#1077;&#1081;-&#1087;&#1086;&#1075;&#1088;&#1077;&#1096;&#1085;&#1086;&#1089;&#1090;&#1080;">&#1054;&#1094;&#1077;&#1085;&#1082;&#1072; &#1086;&#1073;&#1097;&#1077;&#1081; &#1087;&#1086;&#1075;&#1088;&#1077;&#1096;&#1085;&#1086;&#1089;&#1090;&#1080;<a class="anchor-link" href="#&#1054;&#1094;&#1077;&#1085;&#1082;&#1072;-&#1086;&#1073;&#1097;&#1077;&#1081;-&#1087;&#1086;&#1075;&#1088;&#1077;&#1096;&#1085;&#1086;&#1089;&#1090;&#1080;">&#182;</a></h4><p>Все вычисления производились при помощи библиотечных функций. Многие из них не предоставляют информацию о погрешности вычислений. Поэтому оценка будет грубой и будет производиться на основе тех данных, которые есть.</p>
 <p>Абсолютная погрешность вычисления коэффициента упругости пружины $K$ равна $5.75 \cdot 10^{-15}$.
 Абсолютная погрешность решения системы дифференциальных уравнений установлена вручную и равна $10^{-10}$.</p>
 <p>Итого, грубая оценка абсолютной погрешности вычислений равна $10^{-10}$.</p>
@@ -22464,6 +22469,17 @@ gN0SLAAAwG4JFgAAYLcECwAAsFu/AOzqUsctyiFgAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>По графикам видно, что варьирование параметров $K$ и $M$, независимо от того, в большую сторону или в меньшую, наиболее сильно сказывается на демпфер $D_1$. Влияние варьирования параметров $K$ и $M$ на точность для демпферов $D_2$ и $D_3$ сильно меньше.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="&#1042;&#1099;&#1074;&#1086;&#1076;&#1099;">&#1042;&#1099;&#1074;&#1086;&#1076;&#1099;<a class="anchor-link" href="#&#1042;&#1099;&#1074;&#1086;&#1076;&#1099;">&#182;</a></h4><p>В ходе выполнения курсовой работы было получено смещение центра тяжести автомобиля для трёх различных демпферов. На основании полученного смещения было проведено сравнение демпферов по нескольким критериям. Путём варьирования значений массы автомобиля и коэффициента жёсткости пружины было исследовано влияние на результат погрешности исходных данных.</p>
+<p>В результате автор получил опыт программирования на языке <strong>python</strong> и знание библиотечных функций, позволяющих численно решать системы алгебраических и дифференциальных уравнений и численно интегрировать функции.</p>
 
 </div>
 </div>
